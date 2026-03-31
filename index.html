@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ekklesia</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Página de Login -->
+      <div id="login-page" class="page">
+        <div class="box">
+          <h1>Login</h1>
+          <form id="login-form">
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Senha" required />
+            <button type="submit">Entrar</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Página de Cadastro (Admin only) -->
+      <div id="cadastro-page" class="page hidden">
+        <div class="box">
+          <h1>Cadastro de Usuário</h1>
+          <form id="cadastro-form">
+            <input type="text" placeholder="Nome" required />
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Senha" required />
+            <select required>
+              <option value="">Selecionar tipo</option>
+              <option value="USUARIO">Usuário</option>
+              <option value="LIDER">Líder de Ministério</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+            <button type="submit">Cadastrar</button>
+          </form>
+          <p><a href="#" onclick="switchPage('home')">Voltar</a></p>
+        </div>
+      </div>
+
+      <!-- Página Home -->
+      <div id="home-page" class="page hidden">
+        <div class="box">
+          <h1>Home</h1>
+          <p>Bem-vindo, <span id="user-name"></span>!</p>
+          <div id="admin-section" class="hidden">
+            <button onclick="switchPage('cadastro')">Cadastrar Usuário</button>
+          </div>
+          <button onclick="logout()">Sair</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
