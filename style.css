@@ -1,26 +1,46 @@
+/* Importa as fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap');
+
+/* 
+   Remove margens e paddings
+ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ========================
+   BODY
+   Fundo escuro, texto claro,
+   tudo centralizado na tela
+======================== */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #fff;
-  color: #000;
+  font-family: 'EB Garamond', serif;
+  background-color: #0e0c0a;
+  color: #f0e8d8;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
 }
 
+/* ========================
+   CONTAINER
+   Envolve todas as páginas
+======================== */
 .container {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 24px;
 }
 
+/* ========================
+   PÁGINA
+   Cada "tela" do sistema
+======================== */
 .page {
   width: 100%;
   display: flex;
@@ -28,6 +48,7 @@ body {
   align-items: center;
 }
 
+/* Esconde páginas inativas */
 .page.hidden {
   display: none;
 }
@@ -36,109 +57,157 @@ body {
   display: none;
 }
 
+/* ========================
+   BOX
+   O cartão central com
+   borda dourada
+======================== */
 .box {
-  border: 2px solid #000;
-  padding: 40px;
-  width: 300px;
-  background-color: #fff;
+  width: 360px;
+  padding: 48px 40px;
+  background-color: #161310;
+  border: 1px solid #c9a45a;
 }
 
+/* ========================
+   TÍTULO H1
+   Fonte clássica em dourado
+======================== */
 h1 {
-  font-size: 24px;
-  font-weight: normal;
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 600;
   text-align: center;
-  margin-bottom: 30px;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #e8c98a;
+  margin-bottom: 36px;
 }
 
+/* ========================
+   FORMULÁRIO
+   Campos empilhados com
+   espaço entre eles
+======================== */
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
 }
 
-input {
-  border: 1px solid #000;
-  padding: 12px;
-  font-size: 14px;
-  background-color: #fff;
-  color: #000;
-}
-
-input:focus {
+/* ========================
+   INPUTS E SELECT
+   Campos de texto e dropdown
+======================== */
+input,
+select {
+  border: 1px solid #3a3028;
+  padding: 13px 14px;
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  background-color: #0e0c0a;
+  color: #f0e8d8;
   outline: none;
-  border: 2px solid #000;
-  padding: 11px;
+  width: 100%;
+}
+
+input::placeholder {
+  color: #9a8a72;
+  font-style: italic;
+}
+
+/* Borda dourada quando o campo está em foco */
+input:focus,
+select:focus {
+  border-color: #c9a45a;
 }
 
 select {
-  border: 1px solid #000;
-  padding: 12px;
-  font-size: 14px;
-  background-color: #fff;
-  color: #000;
-}
-
-select:focus {
-  outline: none;
-  border: 2px solid #000;
-  padding: 11px;
-}
-
-button {
-  border: 2px solid #000;
-  padding: 12px;
-  font-size: 14px;
-  background-color: #fff;
-  color: #000;
   cursor: pointer;
-  font-weight: bold;
-  letter-spacing: 1px;
+  /* Remove a setinha padrão do navegador */
+  appearance: none;
 }
 
+select option {
+  background-color: #1e1a16;
+}
+
+/* ========================
+   BOTÃO
+   Transparente com borda
+   dourada, texto em dourado
+======================== */
+button {
+  border: 1px solid #c9a45a;
+  padding: 13px 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: #c9a45a;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Leve brilho ao passar o mouse */
 button:hover {
-  background-color: #000;
-  color: #fff;
+  background-color: rgba(201, 164, 90, 0.08);
+  color: #e8c98a;
 }
 
+/* ========================
+   PARÁGRAFOS E LINKS
+======================== */
 p {
   text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
+  margin-top: 24px;
+  font-size: 14px;
+  color: #9a8a72;
 }
 
 a {
-  color: #000;
+  color: #c9a45a;
   text-decoration: none;
-  border-bottom: 1px solid #000;
+  font-style: italic;
+  border-bottom: 1px solid rgba(201, 164, 90, 0.3);
 }
 
 a:hover {
-  border-bottom: 2px solid #000;
+  color: #e8c98a;
+  border-bottom-color: #e8c98a;
 }
 
+/* ========================
+   MENSAGEM DE ERRO
+======================== */
 .error {
-  color: #d32f2f;
-  font-size: 12px;
+  color: #c0392b;
+  font-size: 13px;
   text-align: center;
   margin-top: 10px;
+  font-style: italic;
 }
 
+/* ========================
+   MENSAGEM DE SUCESSO
+======================== */
 .success {
-  color: #388e3c;
-  font-size: 12px;
+  color: #4caf7d;
+  font-size: 13px;
   text-align: center;
   margin-top: 10px;
+  font-style: italic;
 }
 
+/* ========================
+   SEÇÃO ADMIN (Home)
+   Separada dos outros botões
+======================== */
 #admin-section {
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #000;
-}
-
-#admin-section button {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
+  border-bottom: 1px solid #3a3028;
 }
