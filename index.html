@@ -1,58 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ekklesia</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Página de Login -->
-      <div id="login-page" class="page">
-        <div class="box">
-          <h1>Login</h1>
-          <form id="login-form">
-            <input type="email" placeholder="Email" required />
-            <input type="password" placeholder="Senha" required />
-            <button type="submit">Entrar</button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Página de Cadastro (Admin only) -->
-      <div id="cadastro-page" class="page hidden">
-        <div class="box">
-          <h1>Cadastro de Usuário</h1>
-          <form id="cadastro-form">
-            <input type="text" placeholder="Nome" required />
-            <input type="email" placeholder="Email" required />
-            <input type="password" placeholder="Senha" required />
-            <select required>
-              <option value="">Selecionar tipo</option>
-              <option value="USUARIO">Usuário</option>
-              <option value="LIDER">Líder de Ministério</option>
-              <option value="ADMIN">Admin</option>
-            </select>
-            <button type="submit">Cadastrar</button>
-          </form>
-          <p><a href="#" onclick="switchPage('home')">Voltar</a></p>
-        </div>
-      </div>
-
-      <!-- Página Home -->
-      <div id="home-page" class="page hidden">
-        <div class="box">
-          <h1>Home</h1>
-          <p>Bem-vindo, <span id="user-name"></span>!</p>
-          <div id="admin-section" class="hidden">
-            <button onclick="switchPage('cadastro')">Cadastrar Usuário</button>
-          </div>
-          <button onclick="logout()">Sair</button>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ekklesia - Gerenciamento de Ministérios</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="login-page" class="page active">
+    <div class="login-container">
+      <div class="login-box">
+        <h1>Ekklesia</h1>
+        <p>Gerenciamento de Ministérios</p>
+        <form id="login-form">
+          <input type="email" id="login-email" placeholder="Email" required>
+          <input type="password" id="login-password" placeholder="Senha" required>
+          <button type="submit">Entrar</button>
+        </form>
+        <p class="demo-info">Demo: admin@ekklesia.com / admin123</p>
       </div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <div id="app-container" class="page">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h2>Ekklesia</h2>
+        <p id="user-display"></p>
+      </div>
+      <ul class="menu">
+        <li><a href="#" data-page="home" class="menu-item">Dashboard</a></li>
+        <li id="usuarios-menu"><a href="#" data-page="usuarios" class="menu-item">Usuários</a></li>
+        <li><a href="#" data-page="eventos" class="menu-item">Eventos</a></li>
+        <li class="divider"></li>
+        <li><a href="#" onclick="logout(); return false;" class="menu-item logout">Sair</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-content">
+      <!-- Dashboard -->
+      <div id="home" class="content active">
+        <div class="header">
+          <h1>Dashboard</h1>
+        </div>
+        <div class="dashboard-grid">
+          <div class="card">
+            <h3>Usuários</h3>
+            <p class="stat-number" id="total-usuarios">0</p>
+          </div>
+          <div class="card">
+            <h3>Eventos</h3>
+            <p class="stat-number" id="total-eventos">0</p>
+          </div>
+          <div class="card">
+            <h3>Escalas</h3>
+            <p class="stat-number" id="total-escalas">0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usuários -->
+      <div id="usuarios" class="content">
+        <div class="header">
+          <h1>Usuários</h1>
+          <button class="btn btn-primary" onclick="usuariosPage.openCreateModal()">Novo Usuário</button>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="usuarios-table-body">
+              <tr><td colspan="4" style="text-align:center">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Eventos -->
+      <div id="eventos" class="content">
+        <div class="header">
+          <h1>Eventos</h1>
+          <button class="btn btn-primary" onclick="eventosPage.openCreateModal()">Novo Evento</button>
+        </div>
+        <div class="cards-grid">
+          <div id="eventos-list"></div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- Modais -->
+  <!-- Modal de Usuário -->
+  <div id="user-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('user-modal'); return false;">&times;</span>
+      <h2 id="user-modal-title">Novo Usuário</h2>
+      <form id="user-form">
+        <input type="hidden" id="user-id">
+        <input type="text" id="user-nome" placeholder="Nome" required>
+        <input type="email" id="user-email" placeholder="Email" required>
+        <input type="password" id="user-senha" placeholder="Senha" required>
+        <select id="user-tipo" required>
+          <option value="">Selecione o tipo</option>
+          <option value="USUARIO">Usuário</option>
+          <option value="LIDER">Líder</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Evento -->
+  <div id="evento-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('evento-modal'); return false;">&times;</span>
+      <h2 id="evento-modal-title">Novo Evento</h2>
+      <form id="evento-form">
+        <input type="hidden" id="evento-id">
+        <input type="text" id="evento-titulo" placeholder="Título" required>
+        <textarea id="evento-descricao" placeholder="Descrição"></textarea>
+        <input type="text" id="evento-local" placeholder="Local">
+        <label>Início:</label>
+        <input type="datetime-local" id="evento-inicio" required>
+        <label>Fim:</label>
+        <input type="datetime-local" id="evento-fim" required>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+
+
+  <script type="module" src="app.js"></script>
+</body>
 </html>

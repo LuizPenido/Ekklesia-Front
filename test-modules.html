@@ -1,0 +1,27 @@
+<!-- Teste de modules -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teste Modules</title>
+</head>
+<body>
+  <h1>Teste de Modules</h1>
+  <pre id="output"></pre>
+  
+  <script type="module">
+    import { router } from './router.js';
+    import { auth } from './utils/auth.js';
+    
+    const output = document.getElementById('output');
+    
+    try {
+      output.textContent += 'Router importado: ' + (typeof router) + '\n';
+      output.textContent += 'Auth importado: ' + (typeof auth) + '\n';
+      output.textContent += 'Auth isAuthenticated: ' + (typeof auth.isAuthenticated) + '\n';
+      output.textContent += '✅ Todos os módulos importados com sucesso!\n';
+    } catch (error) {
+      output.textContent += '❌ Erro: ' + error.message + '\n';
+    }
+  </script>
+</body>
+</html>
