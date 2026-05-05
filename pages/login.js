@@ -1,46 +1,47 @@
-import { auth } from '../utils/auth.js';
+import { auth } from "../utils/auth.js";
+import { showError } from "../utils/modals.js";
 
 export const loginPage = {
-  name: 'login',
-  
+  name: "login",
+
   async init() {
-    const form = document.getElementById('login-form');
+    const form = document.getElementById("login-form");
     if (form) {
-      form.addEventListener('submit', this.handleLogin.bind(this));
+      form.addEventListener("submit", this.handleLogin.bind(this));
     }
   },
 
   show() {
-    const loginPage = document.getElementById('login-page');
-    const appContainer = document.getElementById('app-container');
-    
-    if (loginPage) loginPage.classList.add('active');
-    if (appContainer) appContainer.classList.remove('active');
+    const loginPage = document.getElementById("login-page");
+    const appContainer = document.getElementById("app-container");
 
-    const form = document.getElementById('login-form');
+    if (loginPage) loginPage.classList.add("active");
+    if (appContainer) appContainer.classList.remove("active");
+
+    const form = document.getElementById("login-form");
     if (form) form.reset();
   },
 
   hide() {
-    const loginPage = document.getElementById('login-page');
-    if (loginPage) loginPage.classList.remove('active');
+    const loginPage = document.getElementById("login-page");
+    if (loginPage) loginPage.classList.remove("active");
   },
 
   cleanup() {
-    const form = document.getElementById('login-form');
+    const form = document.getElementById("login-form");
     if (form) {
-      form.removeEventListener('submit', this.handleLogin.bind(this));
+      form.removeEventListener("submit", this.handleLogin.bind(this));
     }
   },
 
   async handleLogin(e) {
     e.preventDefault();
-    
-    const emailInput = document.getElementById('login-email');
-    const passwordInput = document.getElementById('login-password');
-    
+
+    const emailInput = document.getElementById("login-email");
+    const passwordInput = document.getElementById("login-password");
+
     if (!emailInput || !passwordInput) {
-      alert('Erro ao processar formulário');
+      showError("Erro ao processar formulário");
       return;
     }
 
@@ -48,18 +49,18 @@ export const loginPage = {
     const password = passwordInput.value;
 
     if (!email || !password) {
-      alert('Preencha email e senha!');
+      showError("Preencha email e senha!");
       return;
     }
 
     try {
       await auth.login(email, password);
       if (window.router) {
-        window.router.navigate('dashboard');
+        window.router.navigate("dashboard");
       }
     } catch (error) {
-      console.error('Erro no login:', error);
-      alert('Erro: ' + (error.message || 'Email ou senha incorretos'));
+      console.error("Erro no login:", error);
+      showError(error.message || "Email ou senha incorretos");
     }
-  }
+  },
 };
