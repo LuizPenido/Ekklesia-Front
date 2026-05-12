@@ -1,8 +1,8 @@
-import * as api from '../utils/api.js';
-import { openModal, closeModal } from '../utils/modals.js';
+import * as api from "../utils/api.js";
+import { openModal, closeModal } from "../utils/modals.js";
 
 export const usuariosPage = {
-  name: 'usuarios',
+  name: "usuarios",
 
   async init() {
     this.setupFormListener();
@@ -10,51 +10,51 @@ export const usuariosPage = {
   },
 
   show() {
-    const content = document.getElementById('usuarios');
+    const content = document.getElementById("usuarios");
     if (content) {
-      content.classList.add('active');
+      content.classList.add("active");
     }
     this.loadUsuarios();
   },
 
   hide() {
-    const content = document.getElementById('usuarios');
+    const content = document.getElementById("usuarios");
     if (content) {
-      content.classList.remove('active');
+      content.classList.remove("active");
     }
   },
 
   cleanup() {
-    const form = document.getElementById('user-form');
+    const form = document.getElementById("user-form");
     if (form) {
-      form.removeEventListener('submit', this.handleSaveUser.bind(this));
+      form.removeEventListener("submit", this.handleSaveUser.bind(this));
     }
   },
 
   setupFormListener() {
-    const form = document.getElementById('user-form');
+    const form = document.getElementById("user-form");
     if (form) {
-      form.addEventListener('submit', this.handleSaveUser.bind(this));
+      form.addEventListener("submit", this.handleSaveUser.bind(this));
     }
   },
 
   setupFormValidation() {
     const validate = () => {
-      const nome = document.getElementById('user-nome')?.value.trim();
-      const email = document.getElementById('user-email')?.value.trim();
-      const tipo = document.getElementById('user-tipo')?.value;
-      const senhaField = document.getElementById('user-senha');
-      const isNew = !document.getElementById('user-id')?.value;
+      const nome = document.getElementById("user-nome")?.value.trim();
+      const email = document.getElementById("user-email")?.value.trim();
+      const tipo = document.getElementById("user-tipo")?.value;
+      const senhaField = document.getElementById("user-senha");
+      const isNew = !document.getElementById("user-id")?.value;
       const senha = senhaField?.value;
-      const btn = document.getElementById('user-submit-btn');
+      const btn = document.getElementById("user-submit-btn");
       const valid = !!(nome && email && tipo && (!isNew || senha));
       if (btn) btn.disabled = !valid;
     };
-    ['user-nome', 'user-email', 'user-tipo', 'user-senha'].forEach(id => {
+    ["user-nome", "user-email", "user-tipo", "user-senha"].forEach((id) => {
       const el = document.getElementById(id);
       if (el) {
-        el.addEventListener('input', validate);
-        el.addEventListener('change', validate);
+        el.addEventListener("input", validate);
+        el.addEventListener("change", validate);
       }
     });
     this._validateUserForm = validate;
@@ -62,7 +62,7 @@ export const usuariosPage = {
 
   async loadUsuarios() {
     try {
-      const tbody = document.getElementById('usuarios-table-body');
+      const tbody = document.getElementById("usuarios-table-body");
       if (!tbody) return;
 
       tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Carregando...</td></tr>';
@@ -74,7 +74,9 @@ export const usuariosPage = {
         return;
       }
 
-      tbody.innerHTML = usuarios.map(u => `
+      tbody.innerHTML = usuarios
+        .map(
+          (u) => `
         <tr>
           <td>${u.nome}</td>
           <td>${u.email}</td>
@@ -84,71 +86,73 @@ export const usuariosPage = {
             <button class="btn btn-danger btn-small" onclick="usuariosPage.deleteUsuario(${u.id})">Deletar</button>
           </td>
         </tr>
-      `).join('');
+      `,
+        )
+        .join("");
     } catch (error) {
-      console.error('Erro ao carregar usuários:', error);
-      alert('Erro ao carregar usuários: ' + error.message);
+      console.error("Erro ao carregar usuários:", error);
+      alert("Erro ao carregar usuários: " + error.message);
     }
   },
 
   openCreateModal() {
-    const form = document.getElementById('user-form');
+    const form = document.getElementById("user-form");
     if (form) form.reset();
-    const userIdField = document.getElementById('user-id');
-    if (userIdField) userIdField.value = '';
-    const senhaField = document.getElementById('user-senha');
+    const userIdField = document.getElementById("user-id");
+    if (userIdField) userIdField.value = "";
+    const senhaField = document.getElementById("user-senha");
     if (senhaField) senhaField.required = true;
-    const titleField = document.getElementById('user-modal-title');
-    if (titleField) titleField.textContent = 'Novo Usuário';
-    const btn = document.getElementById('user-submit-btn');
+    const titleField = document.getElementById("user-modal-title");
+    if (titleField) titleField.textContent = "Novo Usuário";
+    const btn = document.getElementById("user-submit-btn");
     if (btn) btn.disabled = true;
-    openModal('user-modal');
+    openModal("user-modal");
   },
 
   async editUsuario(id) {
     try {
       const usuario = await api.getUsuario(id);
-      
-      const idField = document.getElementById('user-id');
-      const nomeField = document.getElementById('user-nome');
-      const emailField = document.getElementById('user-email');
-      const tipoField = document.getElementById('user-tipo');
-      const senhaField = document.getElementById('user-senha');
-      const titleField = document.getElementById('user-modal-title');
+
+      const idField = document.getElementById("user-id");
+      const nomeField = document.getElementById("user-nome");
+      const emailField = document.getElementById("user-email");
+      const tipoField = document.getElementById("user-tipo");
+      const senhaField = document.getElementById("user-senha");
+      const titleField = document.getElementById("user-modal-title");
 
       if (idField) idField.value = id;
       if (nomeField) nomeField.value = usuario.nome;
       if (emailField) emailField.value = usuario.email;
       if (tipoField) tipoField.value = usuario.tipo_usuario;
       if (senhaField) senhaField.required = false;
-      if (titleField) titleField.textContent = 'Editar Usuário';
+      if (titleField) titleField.textContent = "Editar Usuário";
       this._validateUserForm?.();
-      openModal('user-modal');
+      openModal("user-modal");
     } catch (error) {
-      console.error('Erro ao carregar usuário:', error);
-      alert('Erro ao carregar usuário: ' + error.message);
+      console.error("Erro ao carregar usuário:", error);
+      alert("Erro ao carregar usuário: " + error.message);
     }
   },
 
   async handleSaveUser(e) {
     e.preventDefault();
-    
-    const idField = document.getElementById('user-id');
-    const nomeField = document.getElementById('user-nome');
-    const emailField = document.getElementById('user-email');
-    const senhaField = document.getElementById('user-senha');
-    const tipoField = document.getElementById('user-tipo');
+
+    const idField = document.getElementById("user-id");
+    const nomeField = document.getElementById("user-nome");
+    const emailField = document.getElementById("user-email");
+    const senhaField = document.getElementById("user-senha");
+    const tipoField = document.getElementById("user-tipo");
 
     if (!nomeField || !emailField || !tipoField) {
-      alert('Erro ao processar formulário');
+      alert("Erro ao processar formulário");
       return;
     }
 
-    const id = idField ? idField.value : '';
+    const id = idField ? idField.value : "";
     const data = {
       nome: nomeField.value,
       email: emailField.value,
-      tipo_usuario: tipoField.value
+      tipo_usuario: tipoField.value,
     };
 
     if (!id && senhaField && senhaField.value) {
@@ -161,28 +165,28 @@ export const usuariosPage = {
       } else {
         await api.createUsuario(data);
       }
-      
-      alert(id ? 'Usuário atualizado!' : 'Usuário criado!');
-      closeModal('user-modal');
+
+      alert(id ? "Usuário atualizado!" : "Usuário criado!");
+      closeModal("user-modal");
       this.loadUsuarios();
     } catch (error) {
-      console.error('Erro ao salvar usuário:', error);
-      alert('Erro: ' + (error.message || 'Falha na operação'));
+      console.error("Erro ao salvar usuário:", error);
+      alert("Erro: " + (error.message || "Falha na operação"));
     }
   },
 
   async deleteUsuario(id) {
-    if (!confirm('Tem certeza que deseja deletar este usuário?')) return;
+    if (!confirm("Tem certeza que deseja deletar este usuário?")) return;
 
     try {
       await api.deleteUsuario(id);
-      alert('Usuário deletado!');
+      alert("Usuário deletado!");
       this.loadUsuarios();
     } catch (error) {
-      console.error('Erro ao deletar usuário:', error);
-      alert('Erro: ' + error.message);
+      console.error("Erro ao deletar usuário:", error);
+      alert("Erro: " + error.message);
     }
-  }
+  },
 };
 
 // Expor métodos globalmente para onclick

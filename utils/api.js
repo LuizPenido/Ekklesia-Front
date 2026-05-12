@@ -1,20 +1,20 @@
 const API_URL = "http://localhost:3000/api";
 
 async function apiCall(endpoint, options = {}) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const headers = {
-    'Content-Type': 'application/json',
-    ...options.headers
+    "Content-Type": "application/json",
+    ...options.headers,
   };
 
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
-      headers
+      headers,
     });
 
     if (!response.ok) {
@@ -30,7 +30,7 @@ async function apiCall(endpoint, options = {}) {
 }
 
 export async function getUsuarios() {
-  return apiCall('/admin/usuarios');
+  return apiCall("/admin/usuarios");
 }
 
 export async function getUsuario(id) {
@@ -38,27 +38,27 @@ export async function getUsuario(id) {
 }
 
 export async function createUsuario(data) {
-  return apiCall('/auth/registro', {
-    method: 'POST',
-    body: JSON.stringify(data)
+  return apiCall("/auth/registro", {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }
 
 export async function updateUsuario(id, data) {
   return apiCall(`/admin/usuarios/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data)
+    method: "PUT",
+    body: JSON.stringify(data),
   });
 }
 
 export async function deleteUsuario(id) {
   return apiCall(`/admin/usuarios/${id}`, {
-    method: 'DELETE'
+    method: "DELETE",
   });
 }
 
 export async function getEventos() {
-  return apiCall('/eventos');
+  return apiCall("/eventos");
 }
 
 export async function getEvento(id) {
@@ -66,27 +66,27 @@ export async function getEvento(id) {
 }
 
 export async function createEvento(data) {
-  return apiCall('/eventos', {
-    method: 'POST',
-    body: JSON.stringify(data)
+  return apiCall("/eventos", {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }
 
 export async function updateEvento(id, data) {
   return apiCall(`/eventos/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data)
+    method: "PUT",
+    body: JSON.stringify(data),
   });
 }
 
 export async function deleteEvento(id) {
   return apiCall(`/eventos/${id}`, {
-    method: 'DELETE'
+    method: "DELETE",
   });
 }
 
 export async function getEscalas() {
-  return apiCall('/escalas');
+  return apiCall("/escalas");
 }
 
 export async function getEscala(id) {
@@ -94,22 +94,22 @@ export async function getEscala(id) {
 }
 
 export async function createEscala(data) {
-  return apiCall('/escalas', {
-    method: 'POST',
-    body: JSON.stringify(data)
+  return apiCall("/escalas", {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }
 
 export async function updateEscala(id, data) {
   return apiCall(`/escalas/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data)
+    method: "PUT",
+    body: JSON.stringify(data),
   });
 }
 
 export async function deleteEscala(id) {
   return apiCall(`/escalas/${id}`, {
-    method: 'DELETE'
+    method: "DELETE",
   });
 }
 
@@ -119,46 +119,46 @@ export async function getEscalaParticipantes(id) {
 
 export async function addEscalaParticipante(escalaId, data) {
   return apiCall(`/escalas/${escalaId}/participantes`, {
-    method: 'POST',
-    body: JSON.stringify(data)
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }
 
 export async function updateParticipanteStatus(participanteId, data) {
   return apiCall(`/escalas/participantes/${participanteId}`, {
-    method: 'PUT',
-    body: JSON.stringify(data)
+    method: "PUT",
+    body: JSON.stringify(data),
   });
 }
 
 export async function removeEscalaParticipante(id) {
   return apiCall(`/escalas/participantes/${id}`, {
-    method: 'DELETE'
+    method: "DELETE",
   });
 }
 
 export async function getNotificacoes() {
-  return apiCall('/notificacoes');
+  return apiCall("/notificacoes");
 }
 
 export async function getNotificacoesCount() {
-  return apiCall('/notificacoes/count');
+  return apiCall("/notificacoes/count");
 }
 
 export async function marcarNotificacaoLida(id) {
-  return apiCall(`/notificacoes/${id}/lida`, { method: 'PUT' });
+  return apiCall(`/notificacoes/${id}/lida`, { method: "PUT" });
 }
 
 export async function login(email, senha) {
   const response = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, senha })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, senha }),
   });
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || 'Falha no login');
+    throw new Error(errorData.error || "Falha no login");
   }
 
   return await response.json();

@@ -155,7 +155,10 @@ body {
   font-size: 14px;
   font-weight: 500;
   border-radius: 0;
-  transition: background 0.15s, color 0.15s, padding-left 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    padding-left 0.15s;
 }
 
 .menu-item:hover {
@@ -233,7 +236,10 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
   cursor: default;
 }
 
@@ -327,7 +333,10 @@ tbody td:last-child {
   padding: 24px;
   border-radius: var(--radius);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
 }
 
 .event-card:hover,
@@ -390,7 +399,10 @@ tbody td:last-child {
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.15s;
   white-space: nowrap;
   text-decoration: none;
 }
@@ -530,7 +542,9 @@ textarea {
   font-family: inherit;
   color: var(--text);
   background: var(--bg);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   width: 100%;
 }
 
@@ -647,10 +661,12 @@ textarea {
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s, transform 0.25s;
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
   z-index: 9999;
   white-space: nowrap;
 }
@@ -661,9 +677,15 @@ textarea {
   pointer-events: auto;
 }
 
-.snackbar.success { background: var(--success); }
-.snackbar.error   { background: var(--danger); }
-.snackbar.warning { background: #e17055; }
+.snackbar.success {
+  background: var(--success);
+}
+.snackbar.error {
+  background: var(--danger);
+}
+.snackbar.warning {
+  background: #e17055;
+}
 
 /* ========================
    BADGE VARIANTS

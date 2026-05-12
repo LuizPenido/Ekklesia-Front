@@ -1,12 +1,12 @@
-import { loginPage } from './pages/login.js';
-import { dashboardPage } from './pages/dashboard.js';
-import { usuariosPage } from './pages/usuarios.js';
-import { eventosPage } from './pages/eventos.js';
-import { escalasPage } from './pages/escalas.js';
-import { notificacoesPage } from './pages/notifications.js';
-import { auth } from './utils/auth.js';
-import { closeModal } from './utils/modals.js';
-import { updateNotifBadge } from './utils/notifBadge.js';
+import { loginPage } from "./pages/login.js";
+import { dashboardPage } from "./pages/dashboard.js";
+import { usuariosPage } from "./pages/usuarios.js";
+import { eventosPage } from "./pages/eventos.js";
+import { escalasPage } from "./pages/escalas.js";
+import { notificacoesPage } from "./pages/notifications.js";
+import { auth } from "./utils/auth.js";
+import { closeModal } from "./utils/modals.js";
+import { updateNotifBadge } from "./utils/notifBadge.js";
 
 class Router {
   constructor() {
@@ -15,11 +15,11 @@ class Router {
       dashboard: dashboardPage,
       usuarios: usuariosPage,
       eventos: eventosPage,
-      notificacoes: notificacoesPage
+      notificacoes: notificacoesPage,
     };
     // Inicializa escalasPage separadamente (não é uma rota, fica dentro dos eventos)
     escalasPage.init();
-    
+
     this.currentPage = null;
     this.initialized = false;
   }
@@ -35,16 +35,16 @@ class Router {
     this.initialized = true;
 
     if (auth.isAuthenticated()) {
-      this.navigate('dashboard');
+      this.navigate("dashboard");
       updateNotifBadge();
     } else {
-      this.navigate('login');
+      this.navigate("login");
     }
   }
 
   navigate(pageName) {
     if (!this.canAccess(pageName)) {
-      this.navigate('dashboard');
+      this.navigate("dashboard");
       return;
     }
 
@@ -54,7 +54,7 @@ class Router {
       return;
     }
 
-    if (pageName === 'login') {
+    if (pageName === "login") {
       this.showLogin();
     } else {
       this.showApp();
@@ -69,13 +69,13 @@ class Router {
     }
 
     this.updateMenuActive(pageName);
-    
+
     this.currentPage = page;
   }
 
   canAccess(pageName) {
     const isAuthenticated = auth.isAuthenticated();
-    const isLoginPage = pageName === 'login';
+    const isLoginPage = pageName === "login";
 
     if (isLoginPage) {
       return !isAuthenticated;
@@ -87,7 +87,7 @@ class Router {
     }
 
     // Usuários (admin only)
-    if (pageName === 'usuarios' && !auth.canManageUsers()) {
+    if (pageName === "usuarios" && !auth.canManageUsers()) {
       return false;
     }
 
@@ -95,8 +95,8 @@ class Router {
   }
 
   setupMenuListeners() {
-    document.querySelectorAll('[data-page]').forEach(item => {
-      item.addEventListener('click', (e) => {
+    document.querySelectorAll("[data-page]").forEach((item) => {
+      item.addEventListener("click", (e) => {
         e.preventDefault();
         const pageName = item.dataset.page;
         this.navigate(pageName);
@@ -106,7 +106,7 @@ class Router {
     // Logout
     const logoutBtn = document.querySelector('[onclick="logout()"]');
     if (logoutBtn) {
-      logoutBtn.addEventListener('click', (e) => {
+      logoutBtn.addEventListener("click", (e) => {
         e.preventDefault();
         this.logout();
       });
@@ -114,47 +114,47 @@ class Router {
   }
 
   updateMenuActive(pageName) {
-    document.querySelectorAll('[data-page]').forEach(item => {
-      item.classList.remove('active');
+    document.querySelectorAll("[data-page]").forEach((item) => {
+      item.classList.remove("active");
       if (item.dataset.page === pageName) {
-        item.classList.add('active');
+        item.classList.add("active");
       }
     });
   }
 
   logout() {
     auth.logout();
-    
-    const loginForm = document.getElementById('login-form');
+
+    const loginForm = document.getElementById("login-form");
     if (loginForm) loginForm.reset();
 
-    this.navigate('login');
+    this.navigate("login");
   }
 
   showApp() {
-    const appContainer = document.getElementById('app-container');
-    const loginPage = document.getElementById('login-page');
-    
-    if (loginPage) loginPage.classList.remove('active');
-    if (appContainer) appContainer.classList.add('active');
+    const appContainer = document.getElementById("app-container");
+    const loginPage = document.getElementById("login-page");
 
-    const userDisplay = document.getElementById('user-display');
+    if (loginPage) loginPage.classList.remove("active");
+    if (appContainer) appContainer.classList.add("active");
+
+    const userDisplay = document.getElementById("user-display");
     if (userDisplay && auth.user) {
       userDisplay.textContent = auth.user.name;
     }
 
-    const usuariosMenu = document.getElementById('usuarios-menu');
+    const usuariosMenu = document.getElementById("usuarios-menu");
     if (usuariosMenu) {
-      usuariosMenu.style.display = auth.canManageUsers() ? 'block' : 'none';
+      usuariosMenu.style.display = auth.canManageUsers() ? "block" : "none";
     }
   }
 
   showLogin() {
-    const appContainer = document.getElementById('app-container');
-    const loginPage = document.getElementById('login-page');
-    
-    if (appContainer) appContainer.classList.remove('active');
-    if (loginPage) loginPage.classList.add('active');
+    const appContainer = document.getElementById("app-container");
+    const loginPage = document.getElementById("login-page");
+
+    if (appContainer) appContainer.classList.remove("active");
+    if (loginPage) loginPage.classList.add("active");
   }
 }
 
