@@ -1,5 +1,6 @@
 import { auth } from "../utils/auth.js";
 import { showError } from "../utils/modals.js";
+import { updateNotifBadge } from "../utils/notifBadge.js";
 
 export const loginPage = {
   name: "login",
@@ -57,6 +58,7 @@ export const loginPage = {
       await auth.login(email, password);
       if (window.router) {
         window.router.navigate("dashboard");
+        updateNotifBadge();
       }
     } catch (error) {
       console.error("Erro no login:", error);

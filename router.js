@@ -2,8 +2,11 @@ import { loginPage } from './pages/login.js';
 import { dashboardPage } from './pages/dashboard.js';
 import { usuariosPage } from './pages/usuarios.js';
 import { eventosPage } from './pages/eventos.js';
+import { escalasPage } from './pages/escalas.js';
+import { notificacoesPage } from './pages/notifications.js';
 import { auth } from './utils/auth.js';
 import { closeModal } from './utils/modals.js';
+import { updateNotifBadge } from './utils/notifBadge.js';
 
 class Router {
   constructor() {
@@ -11,8 +14,11 @@ class Router {
       login: loginPage,
       dashboard: dashboardPage,
       usuarios: usuariosPage,
-      eventos: eventosPage
+      eventos: eventosPage,
+      notificacoes: notificacoesPage
     };
+    // Inicializa escalasPage separadamente (não é uma rota, fica dentro dos eventos)
+    escalasPage.init();
     
     this.currentPage = null;
     this.initialized = false;
@@ -30,6 +36,7 @@ class Router {
 
     if (auth.isAuthenticated()) {
       this.navigate('dashboard');
+      updateNotifBadge();
     } else {
       this.navigate('login');
     }

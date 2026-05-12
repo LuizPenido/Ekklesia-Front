@@ -1,11 +1,16 @@
 import * as api from '../utils/api.js';
 import { openModal, closeModal } from '../utils/modals.js';
+import { auth } from '../utils/auth.js';
 
 export const eventosPage = {
   name: 'eventos',
 
   async init() {
     this.setupFormListener();
+    this.setupFormValidation();
+    // Esconde botão Novo Evento para usuários sem permissão
+    const btnNovo = document.querySelector('#eventos .header button');
+    if (btnNovo) btnNovo.style.display = (auth.isAdmin() || auth.isLider()) ? '' : 'none';
   },
 
   show() {
@@ -37,6 +42,26 @@ export const eventosPage = {
     }
   },
 
+  setupFormValidation() {
+    const validate = () => {
+      const titulo = document.getElementById('evento-titulo')?.value.trim();
+      const inicio = document.getElementById('evento-inicio')?.value;
+      const fim = document.getElementById('evento-fim')?.value;
+      const btn = document.getElementById('evento-submit-btn');
+      let valid = !!(titulo && inicio && fim);
+      if (inicio && fim && new Date(fim) <= new Date(inicio)) valid = false;
+      if (btn) btn.disabled = !valid;
+    };
+    ['evento-titulo', 'evento-inicio', 'evento-fim'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', validate);
+        el.addEventListener('change', validate);
+      }
+    });
+    this._validateEventoForm = validate;
+  },
+
   async loadEventos() {
     try {
       const list = document.getElementById('eventos-list');
@@ -53,15 +78,20 @@ export const eventosPage = {
 
       list.innerHTML = eventos.map(e => {
         const inicio = new Date(e.inicio_em).toLocaleString('pt-BR');
+        const fim = new Date(e.fim_em).toLocaleString('pt-BR');
         return `
           <div class="event-card">
             <h3>${e.titulo}</h3>
             <p><strong>Local:</strong> ${e.local || 'Não especificado'}</p>
             <p><strong>Início:</strong> ${inicio}</p>
+            <p><strong>Fim:</strong> ${fim}</p>
             ${e.descricao ? `<p>${e.descricao}</p>` : ''}
             <div class="card-actions">
-              <button class="btn btn-secondary btn-small" onclick="eventosPage.editEvento(${e.id})">Editar</button>
-              <button class="btn btn-danger btn-small" onclick="eventosPage.deleteEvento(${e.id})">Deletar</button>
+              <button class="btn btn-secondary btn-small" onclick="escalasPage.viewEscalasDoEvento(${e.id})">Escalas</button>
+              ${auth.isAdmin() || auth.isLider() ? `
+                <button class="btn btn-secondary btn-small" onclick="eventosPage.editEvento(${e.id})">Editar</button>
+                <button class="btn btn-danger btn-small" onclick="eventosPage.deleteEvento(${e.id})">Deletar</button>
+              ` : ''}
             </div>
           </div>
         `;
@@ -75,13 +105,12 @@ export const eventosPage = {
   openCreateModal() {
     const form = document.getElementById('evento-form');
     if (form) form.reset();
-    
     const idField = document.getElementById('evento-id');
     if (idField) idField.value = '';
-    
     const titleField = document.getElementById('evento-modal-title');
     if (titleField) titleField.textContent = 'Novo Evento';
-    
+    const btn = document.getElementById('evento-submit-btn');
+    if (btn) btn.disabled = true;
     openModal('evento-modal');
   },
 
@@ -104,7 +133,7 @@ export const eventosPage = {
       if (inicioField) inicioField.value = evento.inicio_em.slice(0, 16);
       if (fimField) fimField.value = evento.fim_em.slice(0, 16);
       if (titleField) titleField.textContent = 'Editar Evento';
-      
+      this._validateEventoForm?.();
       openModal('evento-modal');
     } catch (error) {
       console.error('Erro ao carregar evento:', error);

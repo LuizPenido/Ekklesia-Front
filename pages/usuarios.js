@@ -6,6 +6,7 @@ export const usuariosPage = {
 
   async init() {
     this.setupFormListener();
+    this.setupFormValidation();
   },
 
   show() {
@@ -35,6 +36,28 @@ export const usuariosPage = {
     if (form) {
       form.addEventListener('submit', this.handleSaveUser.bind(this));
     }
+  },
+
+  setupFormValidation() {
+    const validate = () => {
+      const nome = document.getElementById('user-nome')?.value.trim();
+      const email = document.getElementById('user-email')?.value.trim();
+      const tipo = document.getElementById('user-tipo')?.value;
+      const senhaField = document.getElementById('user-senha');
+      const isNew = !document.getElementById('user-id')?.value;
+      const senha = senhaField?.value;
+      const btn = document.getElementById('user-submit-btn');
+      const valid = !!(nome && email && tipo && (!isNew || senha));
+      if (btn) btn.disabled = !valid;
+    };
+    ['user-nome', 'user-email', 'user-tipo', 'user-senha'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', validate);
+        el.addEventListener('change', validate);
+      }
+    });
+    this._validateUserForm = validate;
   },
 
   async loadUsuarios() {
@@ -71,16 +94,14 @@ export const usuariosPage = {
   openCreateModal() {
     const form = document.getElementById('user-form');
     if (form) form.reset();
-    
     const userIdField = document.getElementById('user-id');
     if (userIdField) userIdField.value = '';
-    
     const senhaField = document.getElementById('user-senha');
     if (senhaField) senhaField.required = true;
-    
     const titleField = document.getElementById('user-modal-title');
     if (titleField) titleField.textContent = 'Novo Usuário';
-    
+    const btn = document.getElementById('user-submit-btn');
+    if (btn) btn.disabled = true;
     openModal('user-modal');
   },
 
@@ -101,7 +122,7 @@ export const usuariosPage = {
       if (tipoField) tipoField.value = usuario.tipo_usuario;
       if (senhaField) senhaField.required = false;
       if (titleField) titleField.textContent = 'Editar Usuário';
-      
+      this._validateUserForm?.();
       openModal('user-modal');
     } catch (error) {
       console.error('Erro ao carregar usuário:', error);

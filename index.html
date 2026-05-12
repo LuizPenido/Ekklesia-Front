@@ -15,7 +15,7 @@
           <form id="login-form">
             <input type="email" id="login-email" placeholder="Email" required />
             <input type="password" id="login-password" placeholder="Senha" required />
-            <button type="submit">Entrar</button>
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:4px;">Entrar</button>
             <div id="login-error" class="error" style="display: none"></div>
           </form>
           <p class="demo-info">Demo: admin@ekklesia.com / admin123</p>
@@ -33,6 +33,12 @@
           <li><a href="#" data-page="dashboard" class="menu-item">Dashboard</a></li>
           <li id="usuarios-menu"><a href="#" data-page="usuarios" class="menu-item">Usuários</a></li>
           <li><a href="#" data-page="eventos" class="menu-item">Eventos</a></li>
+          <li>
+            <a href="#" data-page="notificacoes" class="menu-item">
+              Notificações
+              <span id="notif-count-badge" class="notif-badge" style="display:none;">0</span>
+            </a>
+          </li>
           <li class="divider"></li>
           <li>
             <a
@@ -105,6 +111,14 @@
             <div id="eventos-list"></div>
           </div>
         </div>
+
+        <!-- Notificações -->
+        <div id="notificacoes" class="content">
+          <div class="header">
+            <h1>Notificações</h1>
+          </div>
+          <div id="notificacoes-list"></div>
+        </div>
       </div>
     </div>
 
@@ -132,7 +146,7 @@
             <option value="LIDER">Líder</option>
             <option value="ADMIN">Admin</option>
           </select>
-          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button type="submit" id="user-submit-btn" class="btn btn-primary" disabled>Salvar</button>
         </form>
       </div>
     </div>
@@ -158,10 +172,72 @@
           <input type="datetime-local" id="evento-inicio" required />
           <label>Fim:</label>
           <input type="datetime-local" id="evento-fim" required />
-          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button type="submit" id="evento-submit-btn" class="btn btn-primary" disabled>Salvar</button>
         </form>
       </div>
     </div>
+
+    <!-- Modal Escalas do Evento -->
+    <div id="evento-escalas-modal" class="modal">
+      <div class="modal-content modal-content-wide">
+        <span class="close" onclick="closeModal('evento-escalas-modal'); return false;">&times;</span>
+        <div class="modal-header-row">
+          <h2 id="evento-escalas-title">Escalas</h2>
+          <button id="nova-escala-evento-btn" class="btn btn-primary btn-small" onclick="escalasPage.openCreateModalForCurrentEvento()">Nova Escala</button>
+        </div>
+        <div id="evento-escalas-list"></div>
+      </div>
+    </div>
+
+    <!-- Modal de Escala -->
+    <div id="escala-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('escala-modal'); return false;">&times;</span>
+        <h2 id="escala-modal-title">Nova Escala</h2>
+        <form id="escala-form">
+          <input type="hidden" id="escala-id" />
+          <input type="text" id="escala-nome" placeholder="Nome da Escala *" required />
+          <label>Início *</label>
+          <input type="datetime-local" id="escala-inicio" required />
+          <label>Fim *</label>
+          <input type="datetime-local" id="escala-fim" required />
+          <textarea id="escala-observacoes" placeholder="Observações (opcional)"></textarea>
+          <p id="escala-form-warning" class="error" style="display:none;"></p>
+          <button type="submit" id="escala-submit-btn" class="btn btn-primary" disabled>Salvar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Visualizar Escala -->
+    <div id="view-escala-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('view-escala-modal'); return false;">&times;</span>
+        <h2 id="view-escala-title">Detalhes da Escala</h2>
+        <div id="view-escala-body"></div>
+      </div>
+    </div>
+
+    <!-- Modal Adicionar Participante -->
+    <div id="participante-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('participante-modal'); return false;">&times;</span>
+        <h2>Adicionar Participante</h2>
+        <form id="participante-form">
+          <input type="hidden" id="participante-escala-id" />
+          <select id="participante-usuario" required>
+            <option value="">Selecione o Usuário *</option>
+          </select>
+          <input type="text" id="participante-funcao" placeholder="Função (ex: Músico, Líder de Louvor)" />
+          <label>Horário de entrada *</label>
+          <input type="datetime-local" id="participante-horario-inicio" required />
+          <label>Horário de saída *</label>
+          <input type="datetime-local" id="participante-horario-fim" required />
+          <button type="submit" id="participante-submit-btn" class="btn btn-primary" disabled>Adicionar</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="snackbar" class="snackbar"></div>
 
     <script type="module" src="app.js"></script>
   </body>

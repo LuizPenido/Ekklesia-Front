@@ -113,6 +113,42 @@ export async function deleteEscala(id) {
   });
 }
 
+export async function getEscalaParticipantes(id) {
+  return apiCall(`/escalas/${id}/participantes`);
+}
+
+export async function addEscalaParticipante(escalaId, data) {
+  return apiCall(`/escalas/${escalaId}/participantes`, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+}
+
+export async function updateParticipanteStatus(participanteId, data) {
+  return apiCall(`/escalas/participantes/${participanteId}`, {
+    method: 'PUT',
+    body: JSON.stringify(data)
+  });
+}
+
+export async function removeEscalaParticipante(id) {
+  return apiCall(`/escalas/participantes/${id}`, {
+    method: 'DELETE'
+  });
+}
+
+export async function getNotificacoes() {
+  return apiCall('/notificacoes');
+}
+
+export async function getNotificacoesCount() {
+  return apiCall('/notificacoes/count');
+}
+
+export async function marcarNotificacaoLida(id) {
+  return apiCall(`/notificacoes/${id}/lida`, { method: 'PUT' });
+}
+
 export async function login(email, senha) {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',

@@ -50,6 +50,17 @@ export function showSuccess(message, elementId = "login-error", duration = 3000)
   }
 }
 
+export function showSnackbar(message, type = 'success', duration = 3000) {
+  const snackbar = document.getElementById('snackbar');
+  if (!snackbar) return;
+  snackbar.textContent = message;
+  snackbar.className = 'snackbar ' + type + ' show';
+  clearTimeout(snackbar._timeout);
+  snackbar._timeout = setTimeout(() => {
+    snackbar.classList.remove('show');
+  }, duration);
+}
+
 export function setupModalListeners() {
   window.addEventListener("click", (e) => {
     if (e.target.classList.contains("modal")) {
