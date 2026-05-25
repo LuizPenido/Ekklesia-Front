@@ -12,13 +12,53 @@
         <div class="login-box">
           <h1>Ekklesia</h1>
           <p>Gerenciamento de Ministérios</p>
+          <!-- Passo 1: Login -->
           <form id="login-form">
             <input type="email" id="login-email" placeholder="Email" required />
             <input type="password" id="login-password" placeholder="Senha" required />
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px">Entrar</button>
             <div id="login-error" class="error" style="display: none"></div>
           </form>
+          <button id="btn-esqueci-senha" onclick="loginPage.showStep('solicitar')" style="margin-top: 14px; background: none; border: none; color: var(--text-light); font-size: 13px; cursor: pointer; text-decoration: underline;">
+            Esqueci minha senha
+          </button>
           <p class="demo-info">Demo: admin@ekklesia.com / admin123</p>
+
+          <!-- Passo 2: Solicitar código -->
+          <div id="step-solicitar" style="display: none;">
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 16px;">Digite seu email para receber o código de recuperação no terminal do servidor.</p>
+            <form id="recuperar-form">
+              <input type="email" id="recuperar-email" placeholder="Seu email" required />
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px">Enviar Código</button>
+              <div id="recuperar-error" class="error" style="display: none"></div>
+            </form>
+            <button onclick="loginPage.showStep('login')" style="margin-top: 12px; background: none; border: none; color: var(--text-light); font-size: 13px; cursor: pointer; text-decoration: underline;">
+              ← Voltar ao login
+            </button>
+          </div>
+
+          <!-- Passo 3: Inserir código e nova senha -->
+          <div id="step-redefinir" style="display: none;">
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 16px;">Insira o código de 6 dígitos que apareceu no terminal do servidor e sua nova senha.</p>
+            <form id="redefinir-form">
+              <input type="text" id="redefinir-codigo" placeholder="Código de 6 dígitos" maxlength="6" inputmode="numeric" required />
+              <input type="password" id="redefinir-senha" placeholder="Nova senha (mín. 6 caracteres)" required />
+              <input type="password" id="redefinir-senha-conf" placeholder="Confirmar nova senha" required />
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px">Redefinir Senha</button>
+              <div id="redefinir-error" class="error" style="display: none"></div>
+            </form>
+            <button onclick="loginPage.showStep('solicitar')" style="margin-top: 12px; background: none; border: none; color: var(--text-light); font-size: 13px; cursor: pointer; text-decoration: underline;">
+              ← Reenviar código
+            </button>
+          </div>
+
+          <!-- Passo 4: Sucesso -->
+          <div id="step-sucesso" style="display: none; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
+            <p style="color: var(--success); font-size: 15px; font-weight: 600; margin-bottom: 8px;">Senha redefinida com sucesso!</p>
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 20px;">Faça login com sua nova senha.</p>
+            <button onclick="loginPage.showStep('login')" class="btn btn-primary" style="width: 100%;">Ir para o login</button>
+          </div>
         </div>
       </div>
     </div>
